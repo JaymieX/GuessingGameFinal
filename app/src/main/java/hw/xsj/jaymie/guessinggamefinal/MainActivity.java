@@ -1,6 +1,7 @@
 package hw.xsj.jaymie.guessinggamefinal;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MediaPlayer mediaThing;
 
     private GuessingGame game;
 
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mediaThing = MediaPlayer.create(this, R.raw.good);
 
         game = new GuessingGame();
 
@@ -110,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 Animation custom = AnimationUtils.loadAnimation(this, R.anim.custom_anim);
                 btn_a.startAnimation(custom);
                 btn_b.startAnimation(custom);
+
+                mediaThing.start();
 
                 // Add pair
                 pair_count++;
