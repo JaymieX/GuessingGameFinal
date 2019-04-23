@@ -1,5 +1,6 @@
 package hw.xsj.jaymie.guessinggamefinal;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
 
     private int time = 60;
 
+    private int pair_count = 0;
+
+    private Timer timer;
+
+    private void stopTimer()
+    {
+        timer.cancel();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         game = new GuessingGame();
 
         final Handler handler = new Handler();
-        Timer timer = new Timer(false);
+        timer = new Timer(false);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -38,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if (time != 0) {
                             time--;
+                        } else {
+                            // Game lost
+                            Intent i = new Intent(MainActivity.this, ResultActivity.class);
+                            i.putExtra("title", "You failed!");
+
+                            startActivity(i);
+                            MainActivity.this.finish();
+
+                            stopTimer();
                         }
 
                         ProgressBar p = (ProgressBar)findViewById(R.id.progressBar);
@@ -51,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onGameBtnClick(View view) {
+
+        Log.wtf("PAIR", Integer.toString(pair_count));
 
         // Stop if player needs to wait
         if (a != null && b != null) return;
@@ -83,6 +104,20 @@ public class MainActivity extends AppCompatActivity {
             if (a.getValue() == b.getValue()) {
                 btn_a.setEnabled(false);
                 btn_b.setEnabled(false);
+
+                // Add pair
+                pair_count++;
+
+                // Game won
+                if (pair_count == 8) {
+                    Intent intent = new Intent(this, ResultActivity.class);
+                    intent.putExtra("title", "You won!");
+
+                    startActivity(intent);
+                    finish();
+
+                    stopTimer();
+                }
 
                 time += 2; // Add time for player
                 if (time > 60) {
