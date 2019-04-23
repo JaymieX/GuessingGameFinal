@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
@@ -105,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 btn_a.setEnabled(false);
                 btn_b.setEnabled(false);
 
+                Animation custom = AnimationUtils.loadAnimation(this, R.anim.custom_anim);
+                btn_a.startAnimation(custom);
+                btn_b.startAnimation(custom);
+
                 // Add pair
                 pair_count++;
 
@@ -154,4 +160,5 @@ public class MainActivity extends AppCompatActivity {
 
         Log.wtf("BOARD", Integer.toString(item));
     }
+
 }
